@@ -69,7 +69,7 @@ def hello_page():
 def rand_page():
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    webpage = random.choice(['0','1'])
+    webpage = str(random.random())
     #########################################
     return webpage
     #-----------------
