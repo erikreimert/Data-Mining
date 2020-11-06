@@ -11,7 +11,7 @@ import pandas as pd
 
 #----------------------------------------------------
 '''
-    Given the current ratings of player A and player B, compute the expected probability of player A (with rating RA) to win in a game against player B (with rating RB). 
+    Given the current ratings of player A and player B, compute the expected probability of player A (with rating RA) to win in a game against player B (with rating RB).
     ---- Inputs: --------
         * RA: the rating of player A (the average performance of the player), a float scalar value.
         * RB: the rating of player B (the average performance of the player), a float scalar value.
@@ -24,20 +24,20 @@ import pandas as pd
 def compute_EA(RA, RB):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    
+    EA = 1/(1+10**((RB-RA)/400))
     #########################################
     return EA
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
-        python3 -m nose -v test3.py:test_compute_EA
+        py -m nose -v test3.py:test_compute_EA
         ---------------------------------------------------
     '''
-    
+
 #----------------------------------------------------
 '''
-    Given the expected probability of player A (with rating RA) to win in a game against a player B (with rating RB). 
+    Given the expected probability of player A (with rating RA) to win in a game against a player B (with rating RB).
     ---- Inputs: --------
         * EA: the expected probability of player A wins when competing with player B in a game, a float scalar value between 0 and 1.
     ---- Outputs: --------
@@ -49,20 +49,20 @@ def compute_EA(RA, RB):
 def compute_EB(EA):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    
+    EB = 1-EA
     #########################################
     return EB
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
-        python3 -m nose -v test3.py:test_compute_EB
+        py -m nose -v test3.py:test_compute_EB
         ---------------------------------------------------
     '''
-    
+
 #----------------------------------------------------
 '''
-    Given the result of one game between player A and player B, the current ratings of both players, compute the new rating of player A. 
+    Given the result of one game between player A and player B, the current ratings of both players, compute the new rating of player A.
     ---- Inputs: --------
         * RA: the rating of player A (the average performance of the player), a float scalar value.
         * SA: the result of one game where player A is competing with player B, a scalar value. If player A wins in this game, SA = 1; if player A loses, SA =0.
@@ -77,20 +77,20 @@ def compute_EB(EA):
 def update_RA(RA, SA, EA, K=16):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    
+    RA += K*(SA-EA)
     #########################################
     return RA
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
-        python3 -m nose -v test3.py:test_update_RA
+        py -m nose -v test3.py:test_update_RA
         ---------------------------------------------------
     '''
-    
+
 #----------------------------------------------------
 '''
-    Given the result of one game between player A and player B, the current ratings of both players, compute the new rating of player B. 
+    Given the result of one game between player A and player B, the current ratings of both players, compute the new rating of player B.
     ---- Inputs: --------
         * RB: the rating of player B (the average performance of the player), a float scalar value.
         * SB: the result of one game where player B is competing with player A, a scalar value. If player B wins in this game, SB = 1; if player B loses, SB =0.
@@ -105,20 +105,20 @@ def update_RA(RA, SA, EA, K=16):
 def update_RB(RB, SB, EB, K=16):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    
+    RB += K*(SB-EB)
     #########################################
     return RB
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
-        python3 -m nose -v test3.py:test_update_RB
+        py -m nose -v test3.py:test_update_RB
         ---------------------------------------------------
     '''
-    
+
 #----------------------------------------------------
 '''
-    Given the result of one game between player A and player B, the current ratings of both players, compute the new ratings of players A and B. 
+    Given the result of one game between player A and player B, the current ratings of both players, compute the new ratings of players A and B.
     ---- Inputs: --------
         * G: a dataframe of all the game results, a pandas data frame of shape (m by 2), where each row of the matrix G[i] represents the result of the i-th game, and G[i] = (A,B) contains the IDs of the winning team (A) and losing team (B) in the game.
         * n: the total number of players to rank, an integer scalar.
@@ -126,12 +126,12 @@ def update_RB(RB, SB, EB, K=16):
     ---- Outputs: --------
         * R: the ratings of all the n players, a numpy array of length n, where R[i] represents the current rating of the i-th player.
     ---- Hints: --------
-        * Step 1 extract current rating of the winning player (A) of the game from the list R. 
-        * Step 2 extract current rating of the losing player (B) of the game from the list R. 
-        * Step 3 compute the expected winning probability of player A in the game. 
-        * Step 4 compute the expected winning probability of player B in the game. 
-        * Step 5 update player A's rating based upon the game result and write it back to the list R. 
-        * Step 6 update player B's rating based upon the game result and write it back to the list R. 
+        * Step 1 extract current rating of the winning player (A) of the game from the list R.
+        * Step 2 extract current rating of the losing player (B) of the game from the list R.
+        * Step 3 compute the expected winning probability of player A in the game.
+        * Step 4 compute the expected winning probability of player B in the game.
+        * Step 5 update player A's rating based upon the game result and write it back to the list R.
+        * Step 6 update player B's rating based upon the game result and write it back to the list R.
         * This problem can be solved using 5 line(s) of code.
 '''
 #---------------------
@@ -142,25 +142,28 @@ def compute_ratings(G, n, K=16):
         SA,SB = 1,0 # the game result: Player A wins, Player B loses
         #########################################
         ## INSERT YOUR CODE HERE (5 points)
-    
+        RA, RB = R[A], R[B]
+        EA, EB = 1/(1+10**((RB-RA)/400)), 1 - (1/(1+10**((RB-RA)/400)))
+        RA, RB = RA + K*(SA-EA), RB + K*(SB-EB)
+        R[A], R[B] = RA, RB
         #########################################
     return R
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
-        python3 -m nose -v test3.py:test_compute_ratings
+        py -m nose -v test3.py:test_compute_ratings
         ---------------------------------------------------
     '''
-    
+
 
 #--------------------------------------------
 
-''' 
-    TEST problem 3: 
+'''
+    TEST problem 3:
         Now you can test the correctness of all the above functions by typing the following in the terminal:
         ---------------------------------------------------
-        python3 -m nose -v test3.py
+        py -m nose -v test3.py
         ---------------------------------------------------
 
         If your code passed all the tests, you will see the following message in the terminal:
@@ -184,19 +187,19 @@ def compute_ratings(G, n, K=16):
 
 #--------------------------------------------
 '''
-    List of All Variables 
+    List of All Variables
 
-* RA:  the rating of player A (the average performance of the player), a float scalar value. 
-* RB:  the rating of player B (the average performance of the player), a float scalar value. 
-* EA:  the expected probability of player A wins when competing with player B in a game, a float scalar value between 0 and 1. 
-* EB:  the expected probability of player B wins when competing with player A in a game, a float scalar value between 0 and 1. 
-* SA:  the result of one game where player A is competing with player B, a scalar value. If player A wins in this game, SA = 1; if player A loses, SA =0. 
-* SB:  the result of one game where player B is competing with player A, a scalar value. If player B wins in this game, SB = 1; if player B loses, SB =0. 
-* K:  k-factor, a constant number which controls how maximum amount of change that can be applied on the rating of a player based upon the result of one game. 
-* n:  the total number of players to rank, an integer scalar. 
-* m:  the total number of games played, an integer scalar. 
-* R:  the ratings of all the n players, a numpy array of length n, where R[i] represents the current rating of the i-th player. 
-* G:  a dataframe of all the game results, a pandas data frame of shape (m by 2), where each row of the matrix G[i] represents the result of the i-th game, and G[i] = (A,B) contains the IDs of the winning team (A) and losing team (B) in the game. 
+* RA:  the rating of player A (the average performance of the player), a float scalar value.
+* RB:  the rating of player B (the average performance of the player), a float scalar value.
+* EA:  the expected probability of player A wins when competing with player B in a game, a float scalar value between 0 and 1.
+* EB:  the expected probability of player B wins when competing with player A in a game, a float scalar value between 0 and 1.
+* SA:  the result of one game where player A is competing with player B, a scalar value. If player A wins in this game, SA = 1; if player A loses, SA =0.
+* SB:  the result of one game where player B is competing with player A, a scalar value. If player B wins in this game, SB = 1; if player B loses, SB =0.
+* K:  k-factor, a constant number which controls how maximum amount of change that can be applied on the rating of a player based upon the result of one game.
+* n:  the total number of players to rank, an integer scalar.
+* m:  the total number of games played, an integer scalar.
+* R:  the ratings of all the n players, a numpy array of length n, where R[i] represents the current rating of the i-th player.
+* G:  a dataframe of all the game results, a pandas data frame of shape (m by 2), where each row of the matrix G[i] represents the result of the i-th game, and G[i] = (A,B) contains the IDs of the winning team (A) and losing team (B) in the game.
 
 '''
 #--------------------------------------------
