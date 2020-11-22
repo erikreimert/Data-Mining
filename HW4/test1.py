@@ -10,7 +10,7 @@ import math
 #-------------------------------------------------------------------------
 def test_python_version():
     ''' ----------- Problem 1 (30 points in total)---------------------'''
-    assert sys.version_info[0]==3 # require python 3.6 or above 
+    assert sys.version_info[0]==3 # require python 3.6 or above
     assert sys.version_info[1]>=6
 
 #---------------------------------------------------
@@ -49,7 +49,7 @@ def test_matrix_multiplication():
     assert Z[1,1]==-77
     # test on random matrix
     for _ in range(20):
-        r,c,k = np.random.randint(2,20,size= 3) 
+        r,c,k = np.random.randint(2,20,size= 3)
         X = np.random.random((r,k))
         Y = np.random.random((k,c))
         Z = matrix_multiplication(X,Y)
@@ -110,6 +110,5 @@ def test_subset_matrix():
     X_m = subset_matrix(X,m)
     assert np.allclose(X_m,[[1,2],[5,6]])
     m=np.array([False,True,True])
-    X_m = subset_vector(X,m)
+    X_m = subset_matrix(X,m)
     assert np.allclose(X_m,[[3,4],[5,6]])
-
