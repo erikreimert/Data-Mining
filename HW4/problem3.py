@@ -142,7 +142,7 @@ def update_U(R, I, a=1e-05):
     ## INSERT YOUR CODE HERE (7 points)
     U = np.empty([R.shape[1], I.shape[1]])
     for i, val in enumerate(R.T):
-        Uj = train_user_j(extract_user_j(val,I)[0], extract_user_j(val, I)[1], a)
+        Uj = train_user_j(extract_user_j(val, I)[0], extract_user_j(val, I)[1], a)
         U[i] = Uj
     #########################################
     return U
