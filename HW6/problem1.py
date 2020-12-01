@@ -106,7 +106,7 @@ def choose_action_explore(c):
 def choose_action_exploit(Rt, Ct):
     #########################################
     ## INSERT YOUR CODE HERE (25 points)
-    a = np.argmax(Rt * Ct)
+    a = np.argmax(np.nan_to_num(Rt / Ct))
     #########################################
     return a
     #-----------------
@@ -140,7 +140,7 @@ def choose_action_exploit(Rt, Ct):
 def choose_action(Rt, Ct, e=0.05):
     #########################################
     ## INSERT YOUR CODE HERE (25 points)
-    a = choose_action_exploit(Rt, Ct) if np.random.random() > e else choose_action_explore(Ct.length())
+    a = choose_action_exploit(Rt, Ct) if np.random.random() > e else choose_action_explore(Ct.shape[0])
     #########################################
     return a
     #-----------------
