@@ -419,8 +419,7 @@ def train(X, Y, alpha=0.001, n_epoch=100):
 def predict(x, w, b):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    y = 1 if max(w*x + b) > .5 else 0 
-    print(y)
+    y = 1 if max(w*x + b) > .5 else 0
     #########################################
     return y
     #-----------------
