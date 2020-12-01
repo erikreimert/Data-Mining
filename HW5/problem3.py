@@ -12,7 +12,7 @@ from model import CNN
 
 #----------------------------------------------------
 '''
-    (Forward Function 1) Given a convolutional neural network model (m) defined as in 'model.py' (CNN), please compute the linear logits z on a mini-batch of data samples x =[x1, x2, ... x_batch_size]. 
+    (Forward Function 1) Given a convolutional neural network model (m) defined as in 'model.py' (CNN), please compute the linear logits z on a mini-batch of data samples x =[x1, x2, ... x_batch_size].
     ---- Inputs: --------
         * x: a mini-batch of input gray-scale images, a float torch tensor of shape (n, 1, h, w), where x[i,0] is the i-th gray-scale image in the mini-batch.
         * m: a convolutional neural network model, which is defined in "model.py" (CNN), it includes the weights and biases in all layers.
@@ -25,26 +25,26 @@ from model import CNN
 def compute_z(x, m):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    
+    z = m.forward(x)
     #########################################
     return z
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
         nosetests -v test3.py:test_compute_z
-        --- OR ---- 
+        --- OR ----
         python3 -m nose -v test3.py:test_compute_z
-        --- OR ---- 
+        --- OR ----
         python -m nose -v test3.py:test_compute_z
         ---------------------------------------------------
     '''
-    
-    
+
+
 
 #----------------------------------------------------
 '''
-    (Forward Function 2) Suppose we are given a convolutional neural network model and we have already computed the linear logits z on a mini-batch of training samples. Suppose the labels of the training samples are in y. Please compute the average cross-entropy loss of the logistic regression model on the mini-batch of training samples. In the mean time, please also connect the global gradients of the linear logits z (dL_dz) with the loss L correctly. 
+    (Forward Function 2) Suppose we are given a convolutional neural network model and we have already computed the linear logits z on a mini-batch of training samples. Suppose the labels of the training samples are in y. Please compute the average cross-entropy loss of the logistic regression model on the mini-batch of training samples. In the mean time, please also connect the global gradients of the linear logits z (dL_dz) with the loss L correctly.
     ---- Inputs: --------
         * z: the linear logits of the last layer in CNN on a mini-batch of data samples, a float torch vector of length (n), where z[i,0] is the linear logit on the i-th data sample in the mini-batch.
         * y: the binary labels of the images in a mini-batch, a torch integer vector of length n, where y[i,0] is the label of the i-th image in the mini-batch, which can be 0 or 1.
@@ -57,55 +57,56 @@ def compute_z(x, m):
 def compute_L(z, y):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    
+    L = th.nn.BCEWithLogitsLoss()(z, y)
     #########################################
     return L
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
         nosetests -v test3.py:test_compute_L
-        --- OR ---- 
+        --- OR ----
         python3 -m nose -v test3.py:test_compute_L
-        --- OR ---- 
+        --- OR ----
         python -m nose -v test3.py:test_compute_L
         ---------------------------------------------------
     '''
-    
-    
+
+
 
 #----------------------------------------------------
 '''
-    (Gradient Descent) Suppose we are given a convolutional neural network model and we have a mini-batch of training data samples (x,y).  Suppose we have already computed the global gradients of the average loss L w.r.t. the weights w and biases on the mini-batch of data samples. Assume that we have already created an optimizer for all the parameters. Please update the parameters using gradient descent. After the update, the global gradients of all parameters should be set to zero. 
+    (Gradient Descent) Suppose we are given a convolutional neural network model and we have a mini-batch of training data samples (x,y).  Suppose we have already computed the global gradients of the average loss L w.r.t. the weights w and biases on the mini-batch of data samples. Assume that we have already created an optimizer for all the parameters. Please update the parameters using gradient descent. After the update, the global gradients of all parameters should be set to zero.
     ---- Inputs: --------
         * optimizer: a PyTorch optimizer (such as SGD, ADAM, RMSProp) to handle the gradient descent for parameters in the model (weights and bias).
     ---- Hints: --------
-        * Although the parameters of the CNN model are NOT given explicitly in the input of this function, but we can assume that all the parameters are already properly configured in the optimizer. So the optimizer is configured to handle the parameters. 
+        * Although the parameters of the CNN model are NOT given explicitly in the input of this function, but we can assume that all the parameters are already properly configured in the optimizer. So the optimizer is configured to handle the parameters.
         * This problem can be solved using 2 line(s) of code.
 '''
 #---------------------
 def update_parameters(optimizer):
     #########################################
     ## INSERT YOUR CODE HERE (5 points)
-    
+    optimizer.step()
+    optimizer.zero_grad()
     #########################################
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
         nosetests -v test3.py:test_update_parameters
-        --- OR ---- 
+        --- OR ----
         python3 -m nose -v test3.py:test_update_parameters
-        --- OR ---- 
+        --- OR ----
         python -m nose -v test3.py:test_update_parameters
         ---------------------------------------------------
     '''
-    
-    
+
+
 
 #----------------------------------------------------
 '''
-    (Training CNN) Given a training dataset X (features), Y (labels) in a data loader, train a convolutional neural network model using mini-batch stochastic gradient descent: iteratively update the parametersusing the gradients on each mini-batch of data samples.  We repeat n_epoch passes over all the training samples. 
+    (Training CNN) Given a training dataset X (features), Y (labels) in a data loader, train a convolutional neural network model using mini-batch stochastic gradient descent: iteratively update the parametersusing the gradients on each mini-batch of data samples.  We repeat n_epoch passes over all the training samples.
     ---- Inputs: --------
         * data_loader: a PyTorch loader of a dataset.
         * alpha: the step-size parameter of gradient descent, a float scalar.
@@ -113,9 +114,9 @@ def update_parameters(optimizer):
     ---- Outputs: --------
         * m: a convolutional neural network model, which is defined in "model.py" (CNN), it includes the weights and biases in all layers.
     ---- Hints: --------
-        * Step 1 Forward pass: compute the linear logits and loss. 
-        * Step 2 Back propagation: compute the gradients of parameters. 
-        * Step 3 Gradient descent: update the parameters using gradient descent. 
+        * Step 1 Forward pass: compute the linear logits and loss.
+        * Step 2 Back propagation: compute the gradients of parameters.
+        * Step 3 Gradient descent: update the parameters using gradient descent.
         * This problem can be solved using 4 line(s) of code.
 '''
 #---------------------
@@ -128,38 +129,40 @@ def train(data_loader, alpha=0.001, n_epoch=100):
             y=mini_batch[1] # the labels of the images in a mini-batch
             #########################################
             ## INSERT YOUR CODE HERE (5 points)
-    
+            L = compute_L(compute_z(x, m), y)
+            L.backward()
+            update_parameters(optimizer)
             #########################################
     return m
     #-----------------
-    '''  
+    '''
         TEST: Now you can test the correctness of your code above by typing the following in the terminal:
         ---------------------------------------------------
         nosetests -v test3.py:test_train
-        --- OR ---- 
-        python3 -m nose -v test3.py:test_train
-        --- OR ---- 
+        --- OR ----
+        py -m nose -v test3.py:test_train
+        --- OR ----
         python -m nose -v test3.py:test_train
         ---------------------------------------------------
     '''
-    
-    ''' 
-    If you have passed the above test, the trained CNN model should have been saved into a file, named "cnn.pt", you could run a demo by typing this in the terminal: python3 demo.py
-    
+
     '''
-    
+    If you have passed the above test, the trained CNN model should have been saved into a file, named "cnn.pt", you could run a demo by typing this in the terminal: python3 demo.py
+
+    '''
+
 
 
 #--------------------------------------------
 
-''' 
-    TEST problem 3: 
+'''
+    TEST problem 3:
         Now you can test the correctness of all the above functions by typing the following in the terminal:
         ---------------------------------------------------
         nosetests -v test3.py
-        --- OR ---- 
-        python3 -m nose -v test3.py
-        --- OR ---- 
+        --- OR ----
+        py -m nose -v test3.py
+        --- OR ----
         python -m nose -v test3.py
         ---------------------------------------------------
 
@@ -183,20 +186,20 @@ def train(data_loader, alpha=0.001, n_epoch=100):
 
 #--------------------------------------------
 '''
-    List of All Variables 
+    List of All Variables
 
-* n:  batch size, the number of images in a mini-batch, an integer scalar. 
-* h:  the height of each input image, an integer scalar. 
-* w:  the width of each input image, an integer scalar. 
-* x:  a mini-batch of input gray-scale images, a float torch tensor of shape (n, 1, h, w), where x[i,0] is the i-th gray-scale image in the mini-batch. 
-* y:  the binary labels of the images in a mini-batch, a torch integer vector of length n, where y[i,0] is the label of the i-th image in the mini-batch, which can be 0 or 1. 
-* m:  a convolutional neural network model, which is defined in "model.py" (CNN), it includes the weights and biases in all layers. 
-* z:  the linear logits of the last layer in CNN on a mini-batch of data samples, a float torch vector of length (n), where z[i,0] is the linear logit on the i-th data sample in the mini-batch. 
-* L:  the average binary cross entropy loss on a mini-batch of training samples, a torch float scalar. 
-* data_loader:  a PyTorch loader of a dataset. 
-* alpha:  the step-size parameter of gradient descent, a float scalar. 
-* n_epoch:  the number of passes to go through the training dataset in the training process, an integer scalar. 
-* optimizer:  a PyTorch optimizer (such as SGD, ADAM, RMSProp) to handle the gradient descent for parameters in the model (weights and bias). 
+* n:  batch size, the number of images in a mini-batch, an integer scalar.
+* h:  the height of each input image, an integer scalar.
+* w:  the width of each input image, an integer scalar.
+* x:  a mini-batch of input gray-scale images, a float torch tensor of shape (n, 1, h, w), where x[i,0] is the i-th gray-scale image in the mini-batch.
+* y:  the binary labels of the images in a mini-batch, a torch integer vector of length n, where y[i,0] is the label of the i-th image in the mini-batch, which can be 0 or 1.
+* m:  a convolutional neural network model, which is defined in "model.py" (CNN), it includes the weights and biases in all layers.
+* z:  the linear logits of the last layer in CNN on a mini-batch of data samples, a float torch vector of length (n), where z[i,0] is the linear logit on the i-th data sample in the mini-batch.
+* L:  the average binary cross entropy loss on a mini-batch of training samples, a torch float scalar.
+* data_loader:  a PyTorch loader of a dataset.
+* alpha:  the step-size parameter of gradient descent, a float scalar.
+* n_epoch:  the number of passes to go through the training dataset in the training process, an integer scalar.
+* optimizer:  a PyTorch optimizer (such as SGD, ADAM, RMSProp) to handle the gradient descent for parameters in the model (weights and bias).
 
 '''
 #--------------------------------------------
